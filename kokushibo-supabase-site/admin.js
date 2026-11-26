@@ -14,7 +14,7 @@ class AdminQuery {
   select(columns="*", options={}) {
     this.params.set("select", columns);
     if (options.count) this.prefer = [this.prefer, "count=" + options.count].filter(Boolean).join(",");
-    if (options.head) { this.method = "HEAD"; this.head = true; }
+    if (options.head) { this.method = "GET"; this.head = true; this.params.set("limit", "1"); }
     return this;
   }
   insert(value) { this.method = "POST"; this.body = value; this.prefer = [this.prefer,"return=representation"].filter(Boolean).join(","); return this; }
@@ -45,7 +45,7 @@ class AdminQuery {
     const raw = await response.text();
     if (raw) { try { payload = JSON.parse(raw); } catch { payload = {message:raw}; } }
     if (!response.ok) return {data:null,error:{message:payload?.message || payload?.error || "Database request failed ("+response.status+").",details:payload},count:null};
-    if (this.head) return {data:null,error:null,count:Number(payload?.count || 0)};
+    if (this.head) { const range=response.headers.get("content-range")||""; const count=range.includes("/")?Number(range.split("/").pop()):Number(payload?.count||0); return {data:null,error:null,count:Number.isFinite(count)?count:0}; }
     let data = payload;
     if (this.mode === "single") {
       if (Array.isArray(data)) data = data[0] ?? null;
