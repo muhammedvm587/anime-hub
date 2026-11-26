@@ -186,6 +186,102 @@ section:not(.hero):before{content:"";position:absolute;top:0;left:50%;width:min(
 @media(max-width:560px){.overflow-menu{right:-46px}}
 
 </style>
+
+<style id="kokushibo-neon-eclipse-theme">
+/* NEON ECLIPSE — refreshed visual theme */
+:root{
+ --bg:#070914;--panel:#101629;--panel2:#171f38;
+ --red:#9b72ff;--red2:#5b42c7;--muted:#aab5d1;
+ --line:#303b60;--white:#f4f7ff;--good:#68e6c0;--warn:#ffd27a;
+ --accent:#56d9ff;--accent-soft:#172f50;
+}
+html{scroll-behavior:smooth}
+body{
+ background:
+  radial-gradient(ellipse at 12% 0%,rgba(99,73,190,.19),transparent 38rem),
+  radial-gradient(ellipse at 90% 18%,rgba(36,174,221,.10),transparent 34rem),
+  var(--bg);
+ color:var(--white)
+}
+header{
+ background:rgba(7,9,20,.88);
+ border-bottom:1px solid rgba(126,151,255,.22);
+ box-shadow:0 8px 34px rgba(0,0,0,.24)
+}
+.brand{letter-spacing:.2em;text-shadow:0 0 24px rgba(155,114,255,.38)}
+.brand span{color:var(--accent)}
+nav a{transition:color .2s,text-shadow .2s}
+nav a:hover,nav a.motion-active{color:var(--accent);text-shadow:0 0 16px rgba(86,217,255,.5)}
+.btn{
+ background:linear-gradient(145deg,#171e36,#101629);
+ border-color:#34416b;border-radius:11px;
+ box-shadow:0 5px 18px rgba(0,0,0,.18)
+}
+.btn:hover{border-color:var(--accent);box-shadow:0 0 22px rgba(86,217,255,.16)}
+.btn.primary{
+ color:#080b18;border-color:#9b72ff;
+ background:linear-gradient(110deg,#b49aff,#56d9ff);
+ box-shadow:0 8px 28px rgba(121,119,255,.24)
+}
+.btn.soft{background:linear-gradient(120deg,#29204c,#142b45);border-color:#6655a8}
+.hero{
+ background-color:#080c1c;
+ isolation:isolate
+}
+.hero:before{
+ filter:saturate(.78) hue-rotate(24deg);
+ background-blend-mode:normal
+}
+.hero:after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(ellipse at 72% 48%,rgba(96,76,190,.2),transparent 44%),
+ linear-gradient(0deg,rgba(7,9,20,.38),transparent 42%)
+}
+.hero-inner{position:relative;z-index:2}
+.hero h1,.hero h2,.section-head h2{
+ text-shadow:0 0 34px rgba(155,114,255,.2)
+}
+.kicker,.tag,.meta{border-color:rgba(115,151,255,.34)}
+.tag{background:rgba(18,31,59,.88);color:#a9eaff}
+.card,.feature,.chatbox,.sidebox,.admin,.search-panel,.news-item,.notice{
+ background:linear-gradient(145deg,rgba(20,28,51,.96),rgba(12,18,35,.97));
+ border-color:rgba(111,133,197,.25);
+ box-shadow:0 14px 38px rgba(0,0,0,.22)
+}
+.card{border-radius:15px;overflow:hidden}
+.card:hover{
+ border-color:rgba(86,217,255,.65);
+ box-shadow:0 18px 46px rgba(52,112,190,.18),0 0 0 1px rgba(86,217,255,.12);
+ transform:translateY(-5px)
+}
+.card .poster{background:linear-gradient(145deg,#1d1b3c,#10283b)}
+input,select,textarea{
+ background:#0c1328!important;color:var(--white)!important;
+ border:1px solid #34416b!important;border-radius:10px!important
+}
+input:focus,select:focus,textarea:focus{
+ outline:none;border-color:var(--accent)!important;
+ box-shadow:0 0 0 3px rgba(86,217,255,.12)!important
+}
+.pill,.chip{border-color:#39466f;background:#111a32;color:#dce7ff}
+.pill.active,.chip.active{background:#30265c;border-color:#9b72ff;color:#fff}
+.message{border-bottom-color:rgba(120,145,205,.16)}
+.avatar{background:linear-gradient(145deg,#9b72ff,#36b9dc);color:#07101e}
+footer{border-top:1px solid rgba(126,151,255,.2)}
+#motionProgress{background:linear-gradient(90deg,#9b72ff,#56d9ff)!important;box-shadow:0 0 16px rgba(86,217,255,.45)}
+.hero-particles i{background:#8feaff;box-shadow:0 0 12px #56d9ff}
+::selection{background:#8b70e8;color:#fff}
+@media(max-width:700px){
+ .wrap{padding-left:16px;padding-right:16px}
+ header{backdrop-filter:blur(20px)}
+ .hero{min-height:540px}
+}
+@media(prefers-reduced-motion:no-preference){
+ .brand span{animation:eclipseGlow 3.5s ease-in-out infinite alternate}
+ @keyframes eclipseGlow{from{text-shadow:0 0 5px rgba(86,217,255,.25)}to{text-shadow:0 0 22px rgba(86,217,255,.8)}}
+}
+</style>
+
 </head>
 <body>
 <header><div class="wrap nav"><a class="brand" href="#home">KOKU<span>SHIBO</span></a><nav><a href="#discover">Discover</a><a href="#anime">Anime</a><a href="#characters">Characters</a><a href="#manga">Manga</a><a href="#manhwa">Manhwa</a><a href="#community">Community</a><a href="#updates">Updates</a></nav><div class="nav-right"><button class="btn small" onclick="goTo('favorites')">♥ Saved <span id="savedCount">0</span></button><button class="btn small google-nav" id="googleNavButton" onclick="openAuthModal()">G&nbsp; SIGN IN</button><button class="btn primary small" onclick="goTo('discover')">SEARCH</button>
