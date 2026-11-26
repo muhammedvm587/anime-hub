@@ -161,6 +161,8 @@ async function handler(req, res) {
       }
       res.statusCode = upstream.status;
       res.setHeader("Content-Type", upstream.headers.get("content-type") || "application/json; charset=utf-8");
+      const contentRange = upstream.headers.get("content-range");
+      if (contentRange) res.setHeader("Content-Range", contentRange);
       return res.end(text || (upstream.ok ? "[]" : ""));
     } catch (error) {
       return json(res, 502, { error: "Database request failed: " + error.message });
