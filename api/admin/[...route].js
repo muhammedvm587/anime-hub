@@ -1,6 +1,6 @@
 const crypto = require("node:crypto");
 
-module.exports.config = { api: { bodyParser: false } };
+// Vercel must leave request bodies raw for JSON and binary image uploads.
 
 const ALLOWED_TABLES = new Set([
   "catalog_entries", "announcements", "chat_rooms", "chat_messages",
@@ -89,7 +89,7 @@ function noteFailure(req) {
   attempts.set(ip, entry);
 }
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   const parts = Array.isArray(req.query.route) ? req.query.route : String(req.query.route || "").split("/").filter(Boolean);
   const endpoint = parts[0] || "";
   const supabaseUrl = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
@@ -190,3 +190,6 @@ module.exports = async function handler(req, res) {
 
   return json(res, 404, { error: "Unknown admin endpoint." });
 };
+
+handler.config = { api: { bodyParser: false } };
+module.exports = handler;
