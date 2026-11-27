@@ -1,4 +1,4 @@
--- KOKUSHIBO Anime Universe — Supabase schema
+-- My Anime Hub — Supabase schema
 -- Run once in Supabase SQL Editor. This contains NO hard-coded admin password.
 
 create extension if not exists pgcrypto;
@@ -222,8 +222,8 @@ insert into public.chat_rooms(room_slug,title,description) values
 on conflict (room_slug) do nothing;
 
 insert into public.site_settings(key,value,is_public) values
-  ('hero_title','"ENTER THE ANIME REALM"'::jsonb,true),
-  ('hero_subtitle','"Discover characters, explore manga and manhwa, and connect with anime fans."'::jsonb,true),
+  ('hero_title','"MY ANIME HUB"'::jsonb,true),
+  ('hero_subtitle','"Discover anime, manga, manhwa, characters, and meet anime fans."'::jsonb,true),
   ('maintenance_mode','false'::jsonb,false)
 on conflict (key) do nothing;
 
@@ -249,7 +249,7 @@ do $$ begin
   end if;
 end $$;
 
--- FIRST ADMIN BOOTSTRAP: create a dedicated email/password Auth user for the admin,
+-- ADMIN AUTH is separate from Supabase Auth and is configured privately in the hosting environment.
 -- then replace the address below with that exact admin email and run this statement:
 -- insert into public.admin_users(user_id)
 -- select id from auth.users where lower(email) = lower('YOUR_ADMIN_EMAIL@gmail.com')
