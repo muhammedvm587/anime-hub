@@ -94,7 +94,7 @@ async function handler(req, res) {
   const endpoint = parts[0] || "";
   const supabaseUrl = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const configured = !!(process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET && supabaseUrl && serviceKey);
+  const configured = !!(process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET && supabaseUrl && serviceKey);
 
   if (req.method === "OPTIONS") {
     res.statusCode = 204;
@@ -102,7 +102,7 @@ async function handler(req, res) {
   }
 
   if (!configured && endpoint !== "health") {
-    return json(res, 503, { error: "Admin backend is not configured. Set ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_SESSION_SECRET, SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your hosting environment." });
+    return json(res, 503, { error: "Admin backend is not configured. Set ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_SESSION_SECRET, SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your hosting environment." });
   }
   if (endpoint === "health" && req.method === "GET") {
     return json(res, 200, { configured });
@@ -113,15 +113,15 @@ async function handler(req, res) {
     let credentials;
     try { credentials = JSON.parse((await readBody(req)).toString("utf8") || "{}"); }
     catch { return json(res, 400, { error: "Invalid request." }); }
-    const email = String(credentials.email || "").trim().toLowerCase();
-    const expectedEmail = String(process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+    const username = String(credentials.username || "").trim().toLowerCase();
+    const expectedUsername = String(process.env.ADMIN_USERNAME || "admin").trim().toLowerCase();
     const password = String(credentials.password || "");
-    if (!constantTimeEqual(email, expectedEmail) || !constantTimeEqual(password, process.env.ADMIN_PASSWORD || "")) {
+    if (!constantTimeEqual(username, expectedUsername) || !constantTimeEqual(password, process.env.ADMIN_PASSWORD || "")) {
       noteFailure(req);
-      return json(res, 401, { error: "Invalid administrator email or password." });
+      return json(res, 401, { error: "Invalid administrator username or password." });
     }
-    setSessionCookie(res, makeSession(expectedEmail));
-    return json(res, 200, { user: { email: expectedEmail } });
+    setSessionCookie(res, makeSession(expectedUsername));
+    return json(res, 200, { user: { username: expectedUsername } });
   }
 
   if (endpoint === "logout" && req.method === "POST") {
