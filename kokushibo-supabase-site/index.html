@@ -624,7 +624,7 @@ init();
   const toast=$('#toast'); if(toast)uiObserver.observe(toast,{attributes:true,attributeFilter:['class']});
 
   // Expose a safe re-run hook for future sections added by the admin UI.
-  window.refreshMy Anime HubMotion = function(root=document){
+  window.refreshMyAnimeHubMotion = function(root=document){
     decorate(root);
     $$(revealSelectors,root).forEach(revealElement);
   };
