@@ -1,5 +1,5 @@
 // Admin portal authentication is handled by the same-origin serverless API.
-// Admin email/password and the Supabase service key are server environment variables,
+// Admin username/password and the Supabase service key are server environment variables,
 // never browser code. Supabase remains the database and public member-login provider.
 const config = window.KOKU_SUPABASE_CONFIG || {};
 const supabaseUrl = String(config.url || "").replace(/\/$/, "");
@@ -98,13 +98,13 @@ async function checkExistingSession(){
     const response = await fetch("/api/admin/session",{credentials:"same-origin"});
     const data = await response.json().catch(()=>({}));
     if(response.ok && data.user){currentUser=data.user;await loadDashboard();}
-    else gate("Sign in with your administrator email and password.");
+    else gate("Sign in with your administrator username and password.");
   } catch(error) { gate("Could not reach the admin server. Deploy this site with the included Vercel API functions. "+error.message,"bad"); }
 }
 $("adminLogin").addEventListener("click", async () => {
   const username = $("adminUsername").value.trim().toLowerCase();
   const password = $("adminPassword").value;
-  if (!username || !password) { status("gateStatus","Enter the admin email and password.","bad"); return; }
+  if (!username || !password) { status("gateStatus","Enter the admin username and password.","bad"); return; }
   const button=$("adminLogin");button.disabled=true;status("gateStatus","Verifying administrator credentials…");
   try {
     const response=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
