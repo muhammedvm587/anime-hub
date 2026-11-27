@@ -132,7 +132,7 @@ async function handler(req, res) {
   const session = getSession(req);
   if (endpoint === "session" && req.method === "GET") {
     if (!session) return json(res, 401, { error: "Not signed in." });
-    return json(res, 200, { user: { email: session.email } });
+    return json(res, 200, { user: { username: session.email } });
   }
   if (!session) return json(res, 401, { error: "Administrator sign-in required." });
 
