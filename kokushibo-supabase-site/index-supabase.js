@@ -142,3 +142,10 @@ if (!supabase) {
     if (typeof renderChat === "function") renderChat();
   });
 }
+
+// Personal favorites: save anime titles to each user's private account.
+window.kokuSaveFavorite = async item => {
+ const {data:{user}}=await supabase.auth.getUser(); if(!user){alert("Sign in with Google to save favorites.");return;}
+ const {error}=await supabase.from("favorites").upsert({user_id:user.id,entry_kind:item.type||"anime",external_id:String(item.id||item.mal_id||item.title),title:item.title||item.name||"Favorite",image_url:item.image||item.images?.jpg?.image_url||null},{onConflict:"user_id,entry_kind,external_id"});
+ if(error)alert("Favorite save failed: "+error.message);else alert("Saved to your personal favorites!");
+};
