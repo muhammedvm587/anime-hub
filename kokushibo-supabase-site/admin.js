@@ -87,7 +87,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const slugify = s => String(s||"").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,80) || crypto.randomUUID();
 function status(id,msg,kind=""){const el=$(id);if(el){el.textContent=msg;el.className="status "+kind}}
 function gate(message,kind=""){ $("gate").classList.remove("hidden"); $("dashboard").classList.add("hidden"); status("gateStatus",message,kind); }
-function showDashboard(){ $("gate").classList.add("hidden"); $("dashboard").classList.remove("hidden"); $("signOut").classList.remove("hidden"); $("adminIdentity").textContent=currentUser?.email||"Admin session"; }
+function showDashboard(){ $("gate").classList.add("hidden"); $("dashboard").classList.remove("hidden"); $("signOut").classList.remove("hidden"); $("adminIdentity").textContent=currentUser?.username||"Admin session"; }
 async function loadDashboard(){
   currentAdmin=true;showDashboard();
   await loadOverview();await loadCatalog("anime");await loadCatalog("manga");await loadAnnouncements();await loadCommunity();await loadMembers();await loadSettings();
@@ -102,12 +102,12 @@ async function checkExistingSession(){
   } catch(error) { gate("Could not reach the admin server. Deploy this site with the included Vercel API functions. "+error.message,"bad"); }
 }
 $("adminLogin").addEventListener("click", async () => {
-  const email = $("adminEmail").value.trim().toLowerCase();
+  const username = $("adminUsername").value.trim().toLowerCase();
   const password = $("adminPassword").value;
-  if (!email || !password) { status("gateStatus","Enter the admin email and password.","bad"); return; }
+  if (!username || !password) { status("gateStatus","Enter the admin email and password.","bad"); return; }
   const button=$("adminLogin");button.disabled=true;status("gateStatus","Verifying administrator credentials…");
   try {
-    const response=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password})});
+    const response=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
     const data=await response.json().catch(()=>({}));
     if(!response.ok) { status("gateStatus",data.error||"Admin sign-in failed.","bad"); return; }
     $("adminPassword").value="";currentUser=data.user;await loadDashboard();
@@ -115,7 +115,7 @@ $("adminLogin").addEventListener("click", async () => {
   finally { button.disabled=false; }
 });
 $("adminPassword").addEventListener("keydown", e => { if (e.key === "Enter") $("adminLogin").click(); });
-$("adminEmail").addEventListener("keydown", e => { if (e.key === "Enter") $("adminLogin").click(); });
+$("adminUsername").addEventListener("keydown", e => { if (e.key === "Enter") $("adminLogin").click(); });
 $("signOut").addEventListener("click", async()=>{
   await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"});
   currentUser=null;currentAdmin=false;location.href="admin.html";
