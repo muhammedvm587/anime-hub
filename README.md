@@ -21,3 +21,7 @@ The admin API is implemented as a Vercel Function. Hosting must support server f
 
 ## Deploy
 Import this repository into Vercel with the repository root as Root Directory. Set the private environment variables above. For Google login, configure the OAuth provider in Supabase Auth and add your hosting URL to the redirect allow list.
+
+
+## Important hosting note
+The Canva-published site at `myanimehub.my.canva.site` is a Canva website design and does not execute this repository's JavaScript modules or Vercel API functions. For working Google login, database-backed chat, private messages, and admin tools, deploy this repository on Vercel (repository root as Root Directory) and configure the private environment variables. Configure Supabase Google OAuth redirect URLs for that deployed Vercel domain. Canva can be used for visual design and branding, not as the backend host for this app.
